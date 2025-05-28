@@ -25,7 +25,7 @@ struct SetGameModel {
   enum CardColor: String, CaseIterable {
     case red
     case green
-    case yellow
+    case purple
   }
   enum CardShape: String, CaseIterable {
     case diamond

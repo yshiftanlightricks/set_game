@@ -12,7 +12,7 @@ extension SetGameModel.CardColor {
     switch self {
     case .red: return .red
     case .green: return .green
-    case .yellow: return .yellow
+    case .purple: return .purple
     }
   }
 }
