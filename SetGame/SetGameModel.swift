@@ -60,7 +60,7 @@ struct SetGameModel {
   }
 
   // init functions
-  func initCards() -> [Card] {
+  private func initCards() -> [Card] {
     var cards: [Card] = []
     for shape in CardShape.allCases {
       for color in CardColor.allCases {
