@@ -16,6 +16,7 @@ struct ContentView: View {
         .onTapGesture {
           setGameViewModel.handleCardPress(uuid: card.id)
         }
+        .padding(.vertical, 3)
     }
     HStack {
       Button("New Game") {
