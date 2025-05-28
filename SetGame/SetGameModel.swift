@@ -44,7 +44,7 @@ struct SetGameModel {
     var alreadyMatched: Bool = false
 
     var shape: CardShape
-    var color: CardColor
+    var cardColor: CardColor
     var fill: CardFill
     var numberOfShapes: Int
   }
@@ -66,7 +66,7 @@ struct SetGameModel {
       for color in CardColor.allCases {
         for fill in CardFill.allCases {
           for numberOfShapes in 1...3 {
-            cards.append(Card(shape: shape, color: color, fill: fill, numberOfShapes: numberOfShapes))
+            cards.append(Card(shape: shape, cardColor: color, fill: fill, numberOfShapes: numberOfShapes))
           }
         }
       }
@@ -103,7 +103,7 @@ struct SetGameModel {
     }
 
     return allSameOrAllDifferent(selectedCards.map { $0.shape }) &&
-    allSameOrAllDifferent(selectedCards.map { $0.color }) &&
+    allSameOrAllDifferent(selectedCards.map { $0.cardColor }) &&
     allSameOrAllDifferent(selectedCards.map { $0.fill }) &&
     allSameOrAllDifferent(selectedCards.map { $0.numberOfShapes })
   }

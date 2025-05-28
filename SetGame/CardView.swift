@@ -63,7 +63,7 @@ struct CardView: View {
 
   @ViewBuilder
   private func shapeView() -> some View {
-    let color = card.color.color
+    let color = card.cardColor.color
 
     if card.shape == .diamond {
       filledShape(Diamond(), color: color)
@@ -175,6 +175,6 @@ struct Stripes: View {
 
 #Preview {
   VStack {
-    CardView(card: SetGameModel.Card(shape: .diamond, color: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none)
+    CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none)
   }
 }
