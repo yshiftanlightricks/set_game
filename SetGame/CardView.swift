@@ -102,61 +102,61 @@ struct Diamond: Shape {
 }
 
 struct Squiggle: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
 
-        let width = rect.width
-        let height = rect.height
+    let width = rect.width
+    let height = rect.height
 
-        // Start point (left side, middle)
-        let startPoint = CGPoint(x: 0, y: height * 0.5)
-        path.move(to: startPoint)
+    // Start point (left side, middle)
+    let startPoint = CGPoint(x: 0, y: height * 0.5)
+    path.move(to: startPoint)
 
-        // Create the squiggle using cubic Bezier curves
-        // Top curve - swoops up and right
-        path.addCurve(
-            to: CGPoint(x: width * 0.4, y: height * 0.1),
-            control1: CGPoint(x: width * 0.1, y: height * 0.2),
-            control2: CGPoint(x: width * 0.25, y: height * 0.05)
-        )
+    // Create the squiggle using cubic Bezier curves
+    // Top curve - swoops up and right
+    path.addCurve(
+      to: CGPoint(x: width * 0.4, y: height * 0.1),
+      control1: CGPoint(x: width * 0.1, y: height * 0.2),
+      control2: CGPoint(x: width * 0.25, y: height * 0.05)
+    )
 
-        // Top-right curve - continues right with slight dip
-        path.addCurve(
-            to: CGPoint(x: width * 0.8, y: height * 0.3),
-            control1: CGPoint(x: width * 0.55, y: height * 0.15),
-            control2: CGPoint(x: width * 0.7, y: height * 0.2)
-        )
+    // Top-right curve - continues right with slight dip
+    path.addCurve(
+      to: CGPoint(x: width * 0.8, y: height * 0.3),
+      control1: CGPoint(x: width * 0.55, y: height * 0.15),
+      control2: CGPoint(x: width * 0.7, y: height * 0.2)
+    )
 
-        // Right end curve - swoops down to the right end
-        path.addCurve(
-            to: CGPoint(x: width, y: height * 0.5),
-            control1: CGPoint(x: width * 0.9, y: height * 0.4),
-            control2: CGPoint(x: width * 0.95, y: height * 0.45)
-        )
+    // Right end curve - swoops down to the right end
+    path.addCurve(
+      to: CGPoint(x: width, y: height * 0.5),
+      control1: CGPoint(x: width * 0.9, y: height * 0.4),
+      control2: CGPoint(x: width * 0.95, y: height * 0.45)
+    )
 
-        // Bottom-right curve - starts the return journey
-        path.addCurve(
-            to: CGPoint(x: width * 0.6, y: height * 0.9),
-            control1: CGPoint(x: width * 0.9, y: height * 0.8),
-            control2: CGPoint(x: width * 0.75, y: height * 0.95)
-        )
+    // Bottom-right curve - starts the return journey
+    path.addCurve(
+      to: CGPoint(x: width * 0.6, y: height * 0.9),
+      control1: CGPoint(x: width * 0.9, y: height * 0.8),
+      control2: CGPoint(x: width * 0.75, y: height * 0.95)
+    )
 
-        // Bottom curve - continues left with upward bump
-        path.addCurve(
-            to: CGPoint(x: width * 0.2, y: height * 0.7),
-            control1: CGPoint(x: width * 0.45, y: height * 0.85),
-            control2: CGPoint(x: width * 0.3, y: height * 0.8)
-        )
+    // Bottom curve - continues left with upward bump
+    path.addCurve(
+      to: CGPoint(x: width * 0.2, y: height * 0.7),
+      control1: CGPoint(x: width * 0.45, y: height * 0.85),
+      control2: CGPoint(x: width * 0.3, y: height * 0.8)
+    )
 
-        // Left end curve - completes the shape back to start
-        path.addCurve(
-            to: startPoint,
-            control1: CGPoint(x: width * 0.1, y: height * 0.6),
-            control2: CGPoint(x: width * 0.05, y: height * 0.55)
-        )
+    // Left end curve - completes the shape back to start
+    path.addCurve(
+      to: startPoint,
+      control1: CGPoint(x: width * 0.1, y: height * 0.6),
+      control2: CGPoint(x: width * 0.05, y: height * 0.55)
+    )
 
-        return path
-    }
+    return path
+  }
 }
 
 struct Stripes: View {
