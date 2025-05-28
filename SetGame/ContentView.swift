@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
   @ObservedObject var setGameViewModel: SetGameViewModel
-
+  
   var body: some View {
       AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 3/4, minItemWidth: 80) { card in
         CardView(card: card,
@@ -27,7 +27,9 @@ struct ContentView: View {
         setGameViewModel.newGame()
       }
       .padding(.horizontal, 4)
+
       Spacer()
+
       Button("Deal 3 More Cards") {
         setGameViewModel.askForMoreCards()
       }
