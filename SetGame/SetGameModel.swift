@@ -71,7 +71,8 @@ struct SetGameModel {
         }
       }
     }
-    return cards//.shuffled()
+
+    return cards.shuffled()
   }
 
   mutating func selectCard(uuid: UUID) {
