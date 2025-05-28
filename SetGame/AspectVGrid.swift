@@ -11,27 +11,32 @@ struct AspectVGrid<Item: Identifiable, ItemView: View>: View {
     let items: [Item]
     var aspectRatio: CGFloat = 1
     let content: (Item) -> ItemView
+    let minItemWidth: CGFloat
 
-    init(_ items: [Item], aspectRatio: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
+    init(_ items: [Item], aspectRatio: CGFloat, minItemWidth: CGFloat, @ViewBuilder content: @escaping (Item) -> ItemView) {
         self.items = items
         self.aspectRatio = aspectRatio
         self.content = content
+        self.minItemWidth = minItemWidth
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            let gridItemSize = gridItemWidthThatFits(
-                count: items.count,
-                size: geometry.size,
-                atAspectRatio: aspectRatio
-            )
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
-                ForEach(items) { item in
-                    content(item)
-                        .aspectRatio(aspectRatio, contentMode: .fit)
-                }
+      GeometryReader { geometry in
+        let calculatedGridItemSize = gridItemWidthThatFits(
+          count: items.count,
+          size: geometry.size,
+          atAspectRatio: aspectRatio
+        )
+        let gridItemSize = max(calculatedGridItemSize, minItemWidth)
+        ScrollView {
+          LazyVGrid(columns: [GridItem(.adaptive(minimum: gridItemSize), spacing: 0)], spacing: 0) {
+            ForEach(items) { item in
+              content(item)
+                .aspectRatio(aspectRatio, contentMode: .fit)
             }
+          }
         }
+      }
     }
 
     private func gridItemWidthThatFits(

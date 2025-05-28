@@ -56,7 +56,7 @@ struct CardView: View {
         .padding()
       }
     }
-    .frame(minWidth: 40, minHeight: 60)
+    .frame(minWidth: 60, minHeight: 90)
     .aspectRatio(2/3, contentMode: .fit)
   }
 

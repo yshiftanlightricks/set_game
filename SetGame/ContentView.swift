@@ -11,13 +11,17 @@ struct ContentView: View {
   @ObservedObject var setGameViewModel: SetGameViewModel
 
   var body: some View {
-    AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 1) { card in
-      CardView(card: card, isSelected: setGameViewModel.isCardSelected(card: card), chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
-        .onTapGesture {
-          setGameViewModel.handleCardPress(uuid: card.id)
-        }
-        .padding(.vertical, 3)
-    }
+      AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 3/4, minItemWidth: 80) { card in
+        CardView(card: card,
+                 isSelected: setGameViewModel.isCardSelected(card: card),
+                 chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
+          .padding(.vertical, 3)
+          .padding(.horizontal, 10)
+          .onTapGesture {
+            setGameViewModel.handleCardPress(uuid: card.id)
+          }
+      }
+
     HStack {
       Button("New Game") {
         setGameViewModel.newGame()
