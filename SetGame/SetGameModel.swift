@@ -18,7 +18,7 @@ struct SetGameModel {
     get { return Array(cards[0..<currentVisibleCardsNumber]) }
   }
   var deckCount : Int {
-    get { return cards.count  - currentVisibleCardsNumber }
+    get { return cards.count - currentVisibleCardsNumber }
   }
 
   // types
