@@ -50,7 +50,7 @@ struct CardView: View {
         VStack(spacing: 5) {
           ForEach(0..<card.numberOfShapes, id: \.self) { _ in
             shapeView()
-              .aspectRatio(2, contentMode: .fit) // maintain shape aspect ratio
+              .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
               .frame(width: geometry.size.width * 0.6)
           }
         }
@@ -58,7 +58,8 @@ struct CardView: View {
       }
     }
     .aspectRatio(2/3, contentMode: .fit)
-  }
+    .frame(minWidth: 50)
+   }
 
   @ViewBuilder
   private func shapeView() -> some View {

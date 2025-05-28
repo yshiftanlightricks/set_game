@@ -21,9 +21,12 @@ struct ContentView: View {
       Button("New Game") {
         setGameViewModel.newGame()
       }
+      .padding(.horizontal, 4)
+      Spacer()
       Button("Deal 3 More Cards") {
         setGameViewModel.askForMoreCards()
       }
+      .padding(.horizontal, 4)
     }
     Text("Number of Cards in deck: \(setGameViewModel.deckCount)")
   }
