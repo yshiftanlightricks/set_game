@@ -128,6 +128,7 @@ struct SetGameModel {
       else {
         cards.removeAll(where: { selectedCardIds.contains($0.id) })
       }
+      selectedCardIds.removeAll(keepingCapacity: true) // we have to remove all, since these ids were removed
     }
   }
 }
