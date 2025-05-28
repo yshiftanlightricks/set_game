@@ -23,7 +23,7 @@ struct CardView: View {
   var chosenSetNotificationState: ChosenSetNotificationState
 
   var body: some View {
-    let foregroundColor: Color = {
+    let borderForegroundColor: Color = {
       let defaultColor = Color.black
       if !isSelected {
         return defaultColor
@@ -44,7 +44,7 @@ struct CardView: View {
       ZStack {
         RoundedRectangle(cornerRadius: 10)
           .stroke(lineWidth: 3)
-          .foregroundColor(foregroundColor)
+          .foregroundColor(borderForegroundColor)
           .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? .orange : .white))
 
         VStack(spacing: 5) {
