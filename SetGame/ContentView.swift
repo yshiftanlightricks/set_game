@@ -8,17 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+  @ObservedObject var setGameViewModel: SetGameViewModel
+
+  var body: some View {
+    AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 1) { card in
+      CardView(card: card, isSelected: setGameViewModel.isCardSelected(card: card), chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
+        .onTapGesture {
+          setGameViewModel.handleCardPress(uuid: card.id)
         }
-        .padding()
     }
+    HStack {
+      Button("New Game") {
+        setGameViewModel.newGame()
+      }
+      Button("Deal 3 More Cards") {
+        setGameViewModel.askForMoreCards()
+      }
+    }
+    Text("Number of Cards in deck: \(setGameViewModel.deckCount)")
+  }
 }
 
 #Preview {
-    ContentView()
+  ContentView(setGameViewModel: SetGameViewModel(gameModel: SetGameModel()))
 }
