@@ -108,8 +108,7 @@ struct SetGameModel {
   }
 
   mutating func askForMoreCards() {
-    currentVisibleCardsNumber = (currentVisibleCardsNumber + 3) % cards.count
-    // TODO:///
+    currentVisibleCardsNumber = min(currentVisibleCardsNumber + 3, cards.count)
   }
 
   mutating func clearSelection() {
