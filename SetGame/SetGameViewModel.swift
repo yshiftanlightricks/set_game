@@ -17,8 +17,8 @@ class SetGameViewModel : ObservableObject {
   @Published var gameModel: SetGameModel
   var chosenSetNotificationState: ChosenSetNotificationState {
     get {
-      if gameModel.selectedCardIds.count == 3 {
-        if gameModel.isSetWasChosen() {
+      if gameModel.isSetWasChosen() {
+        if gameModel.isValidSet() {
           return .correct
         }
         else {
