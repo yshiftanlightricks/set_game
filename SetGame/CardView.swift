@@ -50,15 +50,12 @@ struct CardView: View {
         RoundedRectangle(cornerRadius: 10)
           .stroke(lineWidth: curBorderWidth)
           .foregroundColor(borderForegroundColor)
-          .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? .orange : .white))
+          .background(RoundedRectangle(cornerRadius: 10).fill(isFaceDown ? emptyCardColor : (isSelected ? .orange : .white)))
           .animation(.bouncy(duration: 3), value: curBorderWidth)
 
         if !isFaceDown {
           innerShapes
-        }
-        else {
-          emptyCardColor
-        }
+        } 
       }
     }
     .aspectRatio(2/3, contentMode: .fit)
