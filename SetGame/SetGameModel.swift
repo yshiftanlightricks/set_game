@@ -22,7 +22,7 @@ struct SetGameModel {
     get { return unmatchedCards.count - currentVisibleCardsNumber }
   }
   var deckCards : [Card] {
-    get { return Array(unmatchedCards.filter { !selectedCardIds.contains($0.id) }) }
+    get { return Array(unmatchedCards[currentVisibleCardsNumber...]) }
   }
 
   // types
@@ -93,6 +93,10 @@ struct SetGameModel {
     selectedCardIds.remove(uuid)
   }
 
+  mutating func shuffleVisibleCards() {
+    unmatchedCards.shuffleFirst(currentVisibleCardsNumber)
+  }
+
   func isSetWasChosen() -> Bool {
     return selectedCardIds.count == 3
   }
@@ -134,4 +138,15 @@ struct SetGameModel {
       selectedCardIds.removeAll(keepingCapacity: true) // we have to remove all, since these ids were removed
     }
   }
+}
+
+extension Array {
+    /// Shuffles the first `n` elements of the array, leaving the rest untouched.
+    mutating func shuffleFirst(_ n: Int) {
+        guard n > 1, n <= count else { return }
+        for i in 0..<(n - 1) {
+            let j = Int.random(in: i..<n)
+            swapAt(i, j)
+        }
+    }
 }

@@ -43,6 +43,11 @@ struct ContentView: View {
       }
       .padding(.horizontal, 4)
 
+      Button("shuffle") {
+        setGameViewModel.gameModel.shuffleVisibleCards()
+      }
+      .padding(.horizontal, 4)
+
 
       VStack {
         Text("Deck")
@@ -55,8 +60,7 @@ struct ContentView: View {
                   setGameViewModel.askForMoreCards()
                 }
               }
-              .opacity(setGameViewModel.visibleCards.contains(card) ? 0 : 1)
-              .matchedGeometryEffect(id: card.id, in: animationNamespace)
+              .matchedGeometryEffect(id: card.id, in: animationNamespace, isSource: false)
           }
         }
         Spacer()

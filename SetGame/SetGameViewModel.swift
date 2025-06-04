@@ -94,4 +94,8 @@ class SetGameViewModel : ObservableObject {
   func initFirstCards() {
     gameModel.initFirstCards()
   }
+
+  func shuffleVisibleCards() {
+    gameModel.shuffleVisibleCards()
+  }
 }
