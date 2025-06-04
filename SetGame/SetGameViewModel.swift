@@ -90,4 +90,8 @@ class SetGameViewModel : ObservableObject {
   func newGame() {
     gameModel.reset()
   }
+
+  func initFirstCards() {
+    gameModel.initFirstCards()
+  }
 }

@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
   @ObservedObject var setGameViewModel: SetGameViewModel
-  
+  @Namespace var animationNamespace
+
   var body: some View {
     AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 3/4, minItemWidth: 80) { card in
       CardView(card: card,
@@ -17,6 +18,7 @@ struct ContentView: View {
                chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
       .padding(.vertical, 3)
       .padding(.horizontal, 10)
+      .matchedGeometryEffect(id: card.id, in: animationNamespace)
       .onTapGesture {
         withAnimation(.easeInOut(duration: 0.5)) {
           setGameViewModel.handleCardPress(uuid: card.id)
@@ -25,6 +27,11 @@ struct ContentView: View {
     }
 
     bottomBar
+      .onAppear {
+        withAnimation(.easeInOut(duration: 1.5)) {
+          setGameViewModel.initFirstCards()
+        }
+      }
   }
 
   @ViewBuilder
@@ -43,8 +50,12 @@ struct ContentView: View {
             CardView(card: card, isSelected: false, chosenSetNotificationState: .none, isFaceDown: true)
               .frame(width: 70, height: 90)
               .onTapGesture { _ in
-                setGameViewModel.askForMoreCards()
+                withAnimation(.easeInOut(duration: 0.5)) {
+                  setGameViewModel.askForMoreCards()
+                }
               }
+              .opacity(setGameViewModel.visibleCards.contains(card) ? 0 : 1)
+              .matchedGeometryEffect(id: card.id, in: animationNamespace)
           }
         }
         Spacer()
@@ -56,6 +67,7 @@ struct ContentView: View {
           ForEach(setGameViewModel.matchedCards) { card in
             CardView(card: card, isSelected: false, chosenSetNotificationState: .none)
               .frame(width: 70, height: 90)
+              .matchedGeometryEffect(id: card.id, in: animationNamespace)
           }
         }
         Spacer()

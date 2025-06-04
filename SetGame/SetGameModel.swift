@@ -60,6 +60,10 @@ struct SetGameModel {
   mutating func reset() {
     unmatchedCards = initCards()
     selectedCardIds = []
+    currentVisibleCardsNumber = 0
+  }
+
+  mutating func initFirstCards() {
     currentVisibleCardsNumber = firstNumberOfVisibleCards
   }
 
