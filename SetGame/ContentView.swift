@@ -18,7 +18,9 @@ struct ContentView: View {
           .padding(.vertical, 3)
           .padding(.horizontal, 10)
           .onTapGesture {
-            setGameViewModel.handleCardPress(uuid: card.id)
+            withAnimation(.easeInOut(duration: 0.5)) {
+              setGameViewModel.handleCardPress(uuid: card.id)
+            }
           }
       }
 
