@@ -39,6 +39,7 @@ struct ContentView: View {
     HStack {
       Button("New Game") {
         setGameViewModel.newGame()
+        setGameViewModel.initFirstCards()
       }
       .padding(.horizontal, 4)
 
