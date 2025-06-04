@@ -22,19 +22,40 @@ struct ContentView: View {
           }
       }
 
+
     HStack {
       Button("New Game") {
         setGameViewModel.newGame()
       }
       .padding(.horizontal, 4)
 
-      Spacer()
 
-      Button("Deal 3 More Cards") {
-        setGameViewModel.askForMoreCards()
+      VStack {
+        Text("Deck")
+        ZStack {
+          ForEach(setGameViewModel.deckCards) { card in
+            CardView(card: card, isSelected: false, chosenSetNotificationState: .none, isFaceDown: true)
+              .frame(width: 70, height: 90)
+              .onTapGesture { _ in
+                setGameViewModel.askForMoreCards()
+              }
+          }
+        }
+        Spacer()
       }
-      .padding(.horizontal, 4)
+
+      VStack(alignment: .leading) {
+        Text("discard pile")
+        ZStack {
+          ForEach(setGameViewModel.matchedCards) { card in
+            CardView(card: card, isSelected: false, chosenSetNotificationState: .none)
+              .frame(width: 70, height: 90)
+          }
+        }
+        Spacer()
+      }
     }
+    .frame(height: 140)
     Text("Number of Cards in deck: \(setGameViewModel.deckCount)")
   }
 }

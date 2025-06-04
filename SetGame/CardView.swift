@@ -21,6 +21,8 @@ struct CardView: View {
   let card: SetGameModel.Card
   var isSelected: Bool
   var chosenSetNotificationState: ChosenSetNotificationState
+  var isFaceDown: Bool = false
+  let emptyCardColor = Color.blue
 
   var body: some View {
     let borderForegroundColor: Color = {
@@ -47,16 +49,25 @@ struct CardView: View {
           .foregroundColor(borderForegroundColor)
           .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? .orange : .white))
 
-        VStack(spacing: 5) {
-          ForEach(0..<card.numberOfShapes, id: \.self) { _ in
-            shapeView()
-              .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
-          }
+        if !isFaceDown {
+          innerShapes
         }
-        .padding()
+        else {
+          emptyCardColor
+        }
       }
     }
     .aspectRatio(2/3, contentMode: .fit)
+  }
+
+  var innerShapes: some View {
+    VStack(spacing: 5) {
+      ForEach(0..<card.numberOfShapes, id: \.self) { _ in
+        shapeView()
+          .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
+      }
+    }
+    .padding()
   }
 
   @ViewBuilder
@@ -172,7 +183,11 @@ struct Stripes: View {
 }
 
 #Preview {
-  VStack {
+  HStack {
     CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none)
+      .padding(50)
+    CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none, isFaceDown: true)
+      .padding(50)
   }
+  .background(Color.cyan)
 }
