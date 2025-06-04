@@ -71,26 +71,12 @@ struct CardView: View {
   var innerShapes: some View {
     VStack(spacing: 5) {
       ForEach(0..<card.numberOfShapes, id: \.self) { _ in
-        shapeView()
+        let color = card.cardColor.color
+        filledShape(AnyShape(card.shape.shapeView), color: color)
           .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
       }
     }
     .padding()
-  }
-
-  @ViewBuilder
-  private func shapeView() -> some View {
-    let color = card.cardColor.color
-
-    if card.shape == .diamond {
-      filledShape(Diamond(), color: color)
-    }
-    else if card.shape == .squiggle {
-      filledShape(Squiggle(), color: color)
-    }
-    else if card.shape == .oval {
-      filledShape(Capsule(), color: color)
-    }
   }
 
   func filledShape<S: Shape>(_ shape: S, color: Color) -> some View {
@@ -189,6 +175,20 @@ struct Stripes: View {
     }
   }
 }
+
+extension SetGameModel.CardShape {
+  var shapeView: any Shape {
+    switch self {
+    case .diamond:
+      return Diamond()
+    case .squiggle:
+      return Squiggle()
+    case .oval:
+      return Capsule()
+    }
+  }
+}
+
 
 #Preview {
   HStack {
