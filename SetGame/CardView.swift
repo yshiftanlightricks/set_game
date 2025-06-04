@@ -32,8 +32,7 @@ struct CardView: View {
       let defaultColor = Color.black
       if !isSelected {
         return defaultColor
-      }
-      else {
+      } else {
         switch chosenSetNotificationState {
         case .none:
           return .black
