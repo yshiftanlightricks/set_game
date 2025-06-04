@@ -21,14 +21,18 @@ struct CardView: View {
   let card: SetGameModel.Card
   var isSelected: Bool
   var chosenSetNotificationState: ChosenSetNotificationState
+  var isFaceDown: Bool = false
+  let emptyCardColor = Color.blue
+  private static let defaultBorderWidth: CGFloat = 3
+  private static let animationBorderWidth: CGFloat = 10
+  @State private var curBorderWidth: CGFloat = defaultBorderWidth
 
   var body: some View {
     let borderForegroundColor: Color = {
       let defaultColor = Color.black
       if !isSelected {
         return defaultColor
-      }
-      else {
+      } else {
         switch chosenSetNotificationState {
         case .none:
           return .black
@@ -43,35 +47,36 @@ struct CardView: View {
     GeometryReader { geometry in
       ZStack {
         RoundedRectangle(cornerRadius: 10)
-          .stroke(lineWidth: 3)
+          .stroke(lineWidth: curBorderWidth)
           .foregroundColor(borderForegroundColor)
-          .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? .orange : .white))
+          .background(RoundedRectangle(cornerRadius: 10).fill(isFaceDown ? emptyCardColor : (isSelected ? .orange : .white)))
+          .animation(.bouncy(duration: 3), value: curBorderWidth)
 
-        VStack(spacing: 5) {
-          ForEach(0..<card.numberOfShapes, id: \.self) { _ in
-            shapeView()
-              .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
-          }
-        }
-        .padding()
+        if !isFaceDown {
+          innerShapes
+        } 
       }
     }
     .aspectRatio(2/3, contentMode: .fit)
+    .onChange(of: chosenSetNotificationState) {
+      if chosenSetNotificationState != .none && isSelected {
+        curBorderWidth = CardView.animationBorderWidth
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          self.curBorderWidth = CardView.defaultBorderWidth
+        }
+      }
+    }
   }
 
-  @ViewBuilder
-  private func shapeView() -> some View {
-    let color = card.cardColor.color
-
-    if card.shape == .diamond {
-      filledShape(Diamond(), color: color)
+  var innerShapes: some View {
+    VStack(spacing: 5) {
+      ForEach(0..<card.numberOfShapes, id: \.self) { _ in
+        let color = card.cardColor.color
+        filledShape(AnyShape(card.shape.shapeView), color: color)
+          .aspectRatio(2/1, contentMode: .fit) // maintain shape aspect ratio
+      }
     }
-    else if card.shape == .squiggle {
-      filledShape(Squiggle(), color: color)
-    }
-    else if card.shape == .oval {
-      filledShape(Capsule(), color: color)
-    }
+    .padding()
   }
 
   func filledShape<S: Shape>(_ shape: S, color: Color) -> some View {
@@ -171,8 +176,26 @@ struct Stripes: View {
   }
 }
 
-#Preview {
-  VStack {
-    CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none)
+extension SetGameModel.CardShape {
+  var shapeView: any Shape {
+    switch self {
+    case .diamond:
+      return Diamond()
+    case .squiggle:
+      return Squiggle()
+    case .oval:
+      return Capsule()
+    }
   }
+}
+
+
+#Preview {
+  HStack {
+    CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none)
+      .padding(50)
+    CardView(card: SetGameModel.Card(shape: .diamond, cardColor: .green, fill: .solid, numberOfShapes: 3), isSelected: false, chosenSetNotificationState: .none, isFaceDown: true)
+      .padding(50)
+  }
+  .background(Color.cyan)
 }
