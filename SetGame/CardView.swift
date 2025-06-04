@@ -23,6 +23,9 @@ struct CardView: View {
   var chosenSetNotificationState: ChosenSetNotificationState
   var isFaceDown: Bool = false
   let emptyCardColor = Color.blue
+  private static let defaultBorderWidth: CGFloat = 3
+  private static let animationBorderWidth: CGFloat = 10
+  @State private var curBorderWidth: CGFloat = defaultBorderWidth
 
   var body: some View {
     let borderForegroundColor: Color = {
@@ -45,9 +48,10 @@ struct CardView: View {
     GeometryReader { geometry in
       ZStack {
         RoundedRectangle(cornerRadius: 10)
-          .stroke(lineWidth: 3)
+          .stroke(lineWidth: curBorderWidth)
           .foregroundColor(borderForegroundColor)
           .background(RoundedRectangle(cornerRadius: 10).fill(isSelected ? .orange : .white))
+          .animation(.bouncy(duration: 3), value: curBorderWidth)
 
         if !isFaceDown {
           innerShapes
@@ -58,6 +62,14 @@ struct CardView: View {
       }
     }
     .aspectRatio(2/3, contentMode: .fit)
+    .onChange(of: chosenSetNotificationState) {
+      if chosenSetNotificationState != .none && isSelected {
+        curBorderWidth = CardView.animationBorderWidth
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+          self.curBorderWidth = CardView.defaultBorderWidth
+        }
+      }
+    }
   }
 
   var innerShapes: some View {
