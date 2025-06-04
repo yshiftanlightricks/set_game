@@ -11,27 +11,27 @@ struct ContentView: View {
   @ObservedObject var setGameViewModel: SetGameViewModel
   
   var body: some View {
-      AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 3/4, minItemWidth: 80) { card in
-        CardView(card: card,
-                 isSelected: setGameViewModel.isCardSelected(card: card),
-                 chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
-          .padding(.vertical, 3)
-          .padding(.horizontal, 10)
-          .onTapGesture {
-            withAnimation(.easeInOut(duration: 0.5)) {
-              setGameViewModel.handleCardPress(uuid: card.id)
-            }
-          }
+    AspectVGrid(setGameViewModel.visibleCards, aspectRatio: 3/4, minItemWidth: 80) { card in
+      CardView(card: card,
+               isSelected: setGameViewModel.isCardSelected(card: card),
+               chosenSetNotificationState: setGameViewModel.chosenSetNotificationState)
+      .padding(.vertical, 3)
+      .padding(.horizontal, 10)
+      .onTapGesture {
+        withAnimation(.easeInOut(duration: 0.5)) {
+          setGameViewModel.handleCardPress(uuid: card.id)
+        }
       }
-
-
+    }
+    
+    
     HStack {
       Button("New Game") {
         setGameViewModel.newGame()
       }
       .padding(.horizontal, 4)
-
-
+      
+      
       VStack {
         Text("Deck")
         ZStack {
@@ -45,7 +45,7 @@ struct ContentView: View {
         }
         Spacer()
       }
-
+      
       VStack {
         Text("discard pile")
         ZStack {
