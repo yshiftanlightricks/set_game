@@ -44,7 +44,7 @@ struct ContentView: View {
         Spacer()
       }
 
-      VStack(alignment: .leading) {
+      VStack {
         Text("discard pile")
         ZStack {
           ForEach(setGameViewModel.matchedCards) { card in

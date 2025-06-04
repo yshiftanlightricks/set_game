@@ -44,12 +44,20 @@ class SetGameViewModel : ObservableObject {
       return gameModel.visibleCards
     }
   }
+  var matchedCards: [SetGameModel.Card] {
+    get {
+      return gameModel.matchedCards
+    }
+  }
+  var deckCards: [SetGameModel.Card] {
+    get { return gameModel.deckCards }
+  }
 
   func handleCardPress(uuid: UUID) {
     let alreadySelected = gameModel.selectedCardIds.contains(uuid)
     if gameModel.selectedCardIds.count >= 3 {
       if chosenSetNotificationState == .correct {
-        gameModel.removeSetAndReplaceIfPossible()
+        gameModel.removeValidChosenSet()
       }
       gameModel.clearSelection()
       if alreadySelected {
@@ -72,7 +80,7 @@ class SetGameViewModel : ObservableObject {
 
   func askForMoreCards() {
     if chosenSetNotificationState == .correct {
-      gameModel.removeSetAndReplaceIfPossible()
+      gameModel.removeValidChosenSet()
     }
     else {
       gameModel.askForMoreCards()

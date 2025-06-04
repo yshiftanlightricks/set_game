@@ -8,17 +8,21 @@
 import Foundation
 
 struct SetGameModel {
-  private(set) var cards: [Card] = []
+  private(set) var unmatchedCards: [Card] = []
   private(set) var selectedCardIds: Set<UUID> = []
+  private(set) var matchedCards: [Card] = []
   private(set) var currentVisibleCardsNumber: Int = 0
 
   private let firstNumberOfVisibleCards: Int = 12
 
   var visibleCards : [Card] {
-    get { return Array(cards[0..<currentVisibleCardsNumber]) }
+    get { return Array(unmatchedCards[0..<currentVisibleCardsNumber]) }
   }
   var deckCount : Int {
-    get { return cards.count - currentVisibleCardsNumber }
+    get { return unmatchedCards.count - currentVisibleCardsNumber }
+  }
+  var deckCards : [Card] {
+    get { return Array(unmatchedCards.filter { !selectedCardIds.contains($0.id) }) }
   }
 
   // types
@@ -54,7 +58,7 @@ struct SetGameModel {
   }
 
   mutating func reset() {
-    cards = initCards()
+    unmatchedCards = initCards()
     selectedCardIds = []
     currentVisibleCardsNumber = firstNumberOfVisibleCards
   }
@@ -90,7 +94,7 @@ struct SetGameModel {
   }
 
   func isValidSet() -> Bool {
-    let selectedCards = cards.filter { selectedCardIds.contains($0.id) }
+    let selectedCards = unmatchedCards.filter { selectedCardIds.contains($0.id) }
     guard selectedCards.count == 3 else { return false }
 
     func allSameOrAllDifferent<T: Hashable>(_ values: [T]) -> Bool {
@@ -109,26 +113,20 @@ struct SetGameModel {
   }
 
   mutating func askForMoreCards() {
-    currentVisibleCardsNumber = min(currentVisibleCardsNumber + 3, cards.count)
+    currentVisibleCardsNumber = min(currentVisibleCardsNumber + 3, unmatchedCards.count)
   }
 
   mutating func clearSelection() {
     selectedCardIds = []
   }
 
-  mutating func removeSetAndReplaceIfPossible() {
+  mutating func removeValidChosenSet() {
     if isValidSet() {
-      if cards.count >= currentVisibleCardsNumber + 3 {
-        selectedCardIds.forEach { id in
-          let idx = cards.firstIndex(of: cards.first(where: { $0.id == id })!)!
-          cards[idx] = cards[cards.count - 1]
-          cards.removeLast()
-        }
+      for id in selectedCardIds {
+        matchedCards.append(unmatchedCards.first(where: { $0.id == id })!)
       }
-      else {
-        cards.removeAll(where: { selectedCardIds.contains($0.id) })
-        currentVisibleCardsNumber -= 3
-      }
+      unmatchedCards.removeAll(where: { selectedCardIds.contains($0.id) })
+      currentVisibleCardsNumber -= 3
       selectedCardIds.removeAll(keepingCapacity: true) // we have to remove all, since these ids were removed
     }
   }
