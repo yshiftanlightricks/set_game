@@ -23,15 +23,19 @@ struct ContentView: View {
         }
       }
     }
-    
-    
+
+    bottomBar
+  }
+
+  @ViewBuilder
+  var bottomBar: some View {
     HStack {
       Button("New Game") {
         setGameViewModel.newGame()
       }
       .padding(.horizontal, 4)
-      
-      
+
+
       VStack {
         Text("Deck")
         ZStack {
@@ -45,7 +49,7 @@ struct ContentView: View {
         }
         Spacer()
       }
-      
+
       VStack {
         Text("discard pile")
         ZStack {
@@ -60,6 +64,8 @@ struct ContentView: View {
     .frame(height: 140)
     Text("Number of Cards in deck: \(setGameViewModel.deckCount)")
   }
+
+    
 }
 
 #Preview {
